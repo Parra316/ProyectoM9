@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+<div th:replace="~{plantillas/plantilla :: body}"></div>
+
+<main class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+  <h1 class="text-center" th:text="${page}"></h1>
+
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered text-center">
+      <thead class="table-dark">
+      <tr>
+        <th>Número de Cita</th>
+        <th>Usuario</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="cita : ${citas}">
+        <td th:text="${cita.idCita}"></td>
+        <td th:text="${cita.citaUsuario.nombre}"></td>
+        <td>
+          <a th:href="@{/citas/editar/{id}(id=${cita.idCita})}" class="btn btn-warning btn-sm">
+            Actualizar
+          </a>
+          <a th:href="@{/citas/eliminar/{id}(id=${cita.idCita})}" class="btn btn-danger btn-sm"
+             onclick="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
+            Eliminar
+          </a>
+        </td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(citas)}">
+        <td colspan="3">No hay citas registradas.</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+</body>
+</html>

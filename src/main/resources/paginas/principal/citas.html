@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+<div th:replace="~{plantillas/plantilla :: body}"></div>
+<!-- Contenido adicional -->
+<main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+  <h1 th:text="${page}"></h1>
+</main>
+<div class="wrapper">
+  <div class="text-center mt-4 name">
+    Kira Massage
+  </div>
+  <form th:action="@{crear-cita}" method="post" th:object="${cita}" class="p-3">
+    <div class="form-field d-flex align-items-center">
+      <i class="bi bi-lock"></i>
+      <select class="form-select" id="citaUsuario" name="citaUsuario" required>
+        <option value="" disabled selected>Seleccione un Usuario</option>
+        <option th:each="cli : ${clientes}" th:value="${cli.idUsuario}" th:text="${cli.nombre}"></option>
+      </select>
+    </div>
+    <div class="form-field d-flex align-items-center">
+      <i class="bi bi-lock"></i>
+      <select class="form-select" id="citaMasajista" name="citaMasajista" required>
+        <option value="" disabled selected>Seleccione un Masajista</option>
+        <option th:each="user : ${masajistas}" th:value="${user.idUsuario}" th:text="${user.nombre}"></option>
+      </select>
+    </div>
+    <div class="form-field d-flex align-items-center">
+      <i class="bi bi-lock"></i>
+      <select class="form-select" id="citaServicio" name="citaServicio" onchange="actualizarDatosServicio()" required>
+        <option value="" th:selected="${servicioSeleccionado == null}">Seleccione un Servicio</option>
+        <option th:each="servicio : ${servicios}"
+                th:value="${servicio.idServicio}"
+                th:data-precio="${servicio.precio}"
+                th:data-duracion="${servicio.duracion}"
+                th:text="${servicio.nombre}"
+                th:selected="${servicio.idServicio == servicioSeleccionado}">
+        </option>
+      </select>
+    </div>
+    <div class="row mb-3 justify-content-around">
+      <div class="col-5 d-flex align-items-center gap-2">
+        <label for="precio" class="mb-0">Precio:</label>
+        <input type="text" id="precio" class="form-control" readonly>
+      </div>
+      <div class="col-5 d-flex align-items-center gap-2">
+        <label for="duracion" class="mb-0">Duración:</label>
+        <input type="text" id="duracion" class="form-control" readonly>
+      </div>
+    </div>
+    <div class="form-field d-flex align-items-center">
+      <i class="bi bi-lock"></i>
+      <select class="form-select" id="horarioConsultorio" name="horarioConsultorio" required>
+        <option value="" disabled selected>Seleccione un Consultorio</option>
+        <option th:each="con : ${consultorios}" th:value="${con.idConsultorio}" th:text="${con.nombre}"></option>
+      </select>
+    </div>
+    <div class="form-field d-flex align-items-center">
+      <i class="bi bi-lock"></i>
+      <input type="date"
+             th:min="${fechaActual}"
+             id="fecha"
+             name="fecha"
+             class="form-control"
+             required>
+    </div>
+    <div class="form-field d-flex align-items-center">
+      <i class="bi bi-lock"></i>
+      <input type="time"
+             id="horaInicio"
+             name="horaInicio"
+             class="form-control"
+             min="11:00" max="21:00"
+             required>
+    </div>
+    <button class="btn mt-3">Agendar Cita</button>
+  </form>
+</div>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    const select = document.getElementById('citaServicio');
+    if (select && select.value) {
+        // Dispara el evento 'change' manualmente
+        select.dispatchEvent(new Event('change'));
+    }
+});
+  function actualizarDatosServicio() {
+      const select = document.getElementById("citaServicio");
+      const selected = select.options[select.selectedIndex];
+
+      const precio = selected.getAttribute("data-precio");
+      const duracion = selected.getAttribute("data-duracion");
+
+      document.getElementById("precio").value = precio ? `$${precio}` : "";
+      document.getElementById("duracion").value = duracion ? `${duracion} min` : "";
+  }
+</script>
+</body>
+</html>
+

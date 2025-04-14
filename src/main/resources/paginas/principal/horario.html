@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="es">
+<head th:replace="~{plantillas/plantilla :: head}"></head>
+<body>
+<div th:replace="~{plantillas/plantilla :: body}"></div>
+<!-- Contenido adicional -->
+<main class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <h1 th:text="${page}"></h1>
+</main>
+<div class="wrapper">
+    <div class="text-center mt-4 name">
+        Kira Massage
+    </div>
+    <form th:action="@{crear-horario}" method="post" class="p-3 mt-3">
+        <div class="form-field d-flex align-items-center">
+            <i class="bi bi-lock"></i>
+            <select class="form-select" id="horarioConsultorio" name="horarioConsultorio" required>
+                <option value="" disabled selected>Selecciona una opción</option>
+                <option th:each="con : ${consultorios}" th:value="${con.idConsultorio}" th:text="${con.nombre}"></option>
+            </select>
+        </div>
+        <div class="form-field d-flex align-items-center">
+            <i class="bi bi-lock"></i>
+            <input type="date" class="form-control is-valid" id="fecha"
+                   name="fecha"
+                   required>
+        </div>
+        <div class="form-field d-flex align-items-center">
+            <i class="bi bi-lock"></i>
+            <input type="time" class="form-control is-valid" id="horaInicio"
+                   name="horaInicio"
+                   required>
+        </div>
+        <div class="form-field d-flex align-items-center">
+            <i class="bi bi-lock"></i>
+            <input type="time" class="form-control is-valid" id="horaFin"
+                   name="horaFin"
+                   required>
+        </div>
+        <button class="btn mt-3">Login</button>
+    </form>
+</div>
+</body>
+</html>
+
